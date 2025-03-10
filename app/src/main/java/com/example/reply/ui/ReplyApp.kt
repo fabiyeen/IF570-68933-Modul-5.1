@@ -30,6 +30,7 @@ import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.currentWindowSize
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
+import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
@@ -48,7 +49,7 @@ import com.example.reply.data.Email
 
 @Composable
 fun ReplyApp(
-    replyHomeUIState: ReplyHomeUIState,
+    replyHomeUIState: ReplyHomeViewModel.ReplyHomeUIState,
     onEmailClick: (Email) -> Unit,
 ) {
     ReplyNavigationWrapperUI {
@@ -141,7 +142,13 @@ fun ReplyAppContent(
         directive = navigator.scaffoldDirective,
         value = navigator.scaffoldValue,
         listPane = {
-            ReplyListPane(replyHomeUIState, onEmailClick)
+            ReplyListPane(
+                replyHomeUIState = replyHomeUIState,
+                onEmailClick = { email ->
+                    onEmailClick(email)
+                    navigator.navigateTo(ListDetailPaneScaffoldRole.Detail, email.id)
+                }
+            )
         },
         detailPane = {
             if (replyHomeUIState.selectedEmail != null) {
