@@ -26,14 +26,21 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.currentWindowSize
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
 import com.example.reply.data.Email
 
 @Composable
@@ -55,6 +62,17 @@ private fun ReplyNavigationWrapperUI(
 ) {
     var selectedDestination: ReplyDestination by remember {
         mutableStateOf(ReplyDestination.Inbox)
+    }
+
+    val windowSize = with(LocalDensity.current) {
+        currentWindowSize().toSize().toDpSize()
+    }
+    val layoutType = if (windowSize.width >= 1200.dp) {
+        NavigationSuiteType.NavigationDrawer
+    } else {
+        NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(
+            currentWindowAdaptiveInfo()
+        )
     }
 
     NavigationSuiteScaffold(
