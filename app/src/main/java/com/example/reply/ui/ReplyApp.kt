@@ -132,7 +132,7 @@ private fun ReplyNavigationWrapperUI(
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 fun ReplyAppContent(
-    replyHomeUIState: ReplyHomeUIState,
+    replyHomeUIState: ReplyHomeViewModel.ReplyHomeUIState,
     onEmailClick: (Email) -> Unit,
 ) {
     val navigator = rememberListDetailPaneScaffoldNavigator<Long>()
@@ -144,7 +144,8 @@ fun ReplyAppContent(
             ReplyListPane(replyHomeUIState, onEmailClick)
         },
         detailPane = {
-            ReplyDetailPane(replyHomeUIState.emails.first())
+            if (replyHomeUIState.selectedEmail != null) {
+                ReplyDetailPane(replyHomeUIState.selectedEmail)
         }
     )
 }
