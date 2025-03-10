@@ -26,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -56,7 +57,28 @@ private fun ReplyNavigationWrapperUI(
         mutableStateOf(ReplyDestination.Inbox)
     }
 
-    // You will implement adaptive navigation here.
+    NavigationSuiteScaffold(
+        navigationSuiteItems = {
+            ReplyDestination.entries.forEach {
+                item(
+                    selected = it == selectedDestination,
+                    onClick = { /*TODO update selection*/ },
+                    icon = {
+                        Icon(
+                            imageVector = it.icon,
+                            contentDescription = stringResource(it.labelRes)
+                        )
+                    },
+                    label = {
+                        Text(text = stringResource(it.labelRes))
+                    },
+                )
+            }
+        }
+    ) {
+        content()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
