@@ -18,16 +18,21 @@ package com.example.reply.ui
 
 import android.os.Build
 import android.os.Bundle
+import android.view.WindowInsets
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.reply.data.local.LocalEmailsDataProvider
 import com.example.reply.ui.theme.ReplyTheme
+import java.lang.reflect.Modifier
 
 class MainActivity : ComponentActivity() {
 
@@ -36,17 +41,24 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        enableEdgeToEdge()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            window.isNavigationBarContrastEnforced = false
-        }
-
         setContent {
             ReplyTheme {
                 val uiState by viewModel.uiState.collectAsStateWithLifecycle()
                 ReplyApp(
                     replyHomeUIState = uiState,
                     onEmailClick = viewModel::setSelectedEmail
+                )
+
+                val adaptiveInfo = currentWindowAdaptiveInfo()
+                val sizeClassText =
+                    "${adaptiveInfo.windowSizeClass.windowWidthSizeClass}\n" +
+                            "${adaptiveInfo.windowSizeClass.windowHeightSizeClass}"
+                Text(
+                    text = sizeClassText,
+                    color = Color.Magenta,
+                    modifier = Modifier.padding(
+                        WindowInsets.safeDrawing.asPaddingValues()
+                    )
                 )
             }
         }
