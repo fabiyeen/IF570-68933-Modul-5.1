@@ -57,6 +57,7 @@ class ReplyHomeViewModel(
 
 data class ReplyHomeUIState(
     val emails : List<Email> = emptyList(),
+    val selectedEmail: Email? = null,
     val loading: Boolean = false,
     val error: String? = null
 )
