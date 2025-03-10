@@ -66,4 +66,4 @@ data class ReplyHomeUIState(
     val selectedEmail: Email? = null,
     val loading: Boolean = false,
     val error: String? = null
-)
+) }
